@@ -5,16 +5,9 @@
   </div>
   <DirectionBar/>
   </div>
-
-<!--  <<Navbar/>-->
-<!--  <div style="width:100%; height:100% ">-->
-
-<!--  </div>>-->
-<!--  <Stations/>-->
 </template>
 
 <script>
-// import Stations from "@/components/Stations";
 import HereMap from "@/components/Map";
 import axios from "axios";
 import DirectionBar from "@/components/DirectionBar";

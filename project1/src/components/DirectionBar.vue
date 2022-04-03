@@ -20,20 +20,23 @@
 
       <div class="barButton" @click="drawRoute"/>
 
+      <div style="background-color: blue; height: 20px; width: 50px; position: relative" v-if="found">
+        <label>
+          Train:
+        </label>
+        duration: {{this.train_route.duration/60}} mins
+      </div>
+      <div style="background-color: blue; height: 20px; width: 50px; top: 500px; position: absolute;" v-if="found">
+        <label>
+          Car:
+        </label>
+        duration: {{Math.floor(this.car_route.duration/60)}} mins
+      </div>
 
     </div>
     <div id="directionBarHandle">
       <div class="barHandle"/>
     </div>
-    <div style="background-color: red; height: 20px; width: 50px" v-if="found">
-      <label>
-        Train:
-      </label>
-      duration: {{}}
-    </div>
-<!--    <div v-if="this.$store.state.map.getSource('route_car')">-->
-
-<!--    </div>-->
 
   </div>
 </template>
@@ -69,21 +72,22 @@ export default {
       let points = this.$store.state.points;
       let date = new Date();
       console.log(this.$store.state.points.from.station.name, this.$store.state.points.to.station.name)
-      let hour = date.getHours(); if(hour < 10) {hour = "0" + hour};
-      let minutes = date.getMinutes(); if(minutes < 10){ minutes = "0" + minutes};
-      let day = date.getDate(); if (day < 10) {day = "0" + day};
-      let month = date.getMonth() + 1; if (month < 10) {month = "0" + month};
+      let hour = date.getHours(); if(hour < 10) {hour = "0" + hour}
+      let minutes = date.getMinutes(); if(minutes < 10){ minutes = "0" + minutes}
+      let day = date.getDate(); if (day < 10) {day = "0" + day}
+      let month = date.getMonth() + 1; if (month < 10) {month = "0" + month}
       let year = "" + date.getFullYear(); year = year.slice(2, 4);
       let query = await axios({
         method: 'get',
-        url: `https://api.irail.be/connections?from=${this.$store.state.points.from.station.name}&to=${this.$store.state.points.to.station.name}&format=json&lang=en&results=1`
+        url: `https://api.irail.be/connections?from=${this.$store.state.points.from.station.name}&to=${this.$store.state.points.to.station.name}&format=json&lang=en&results=2`
       }).then((response) => {
         console.log("getroute_train", response.data);
         return response.data;
-      });
+      }).catch((e)=> {console.warn(e)});
       let resp = await query
-      console.log("trying train now", );
+      console.log("trying train now", resp.connection[0]);
       let vias = [];
+      this.train_route = resp.connection[0];
       try{
         vias = resp.connection[0].vias.via;
       } catch (e){}
@@ -124,7 +128,6 @@ export default {
         });
       }
       console.log("train should work")
-
     },
     async getRoute_car() {
       let points = this.$store.state.points;
@@ -137,8 +140,9 @@ export default {
       console.log("got directions from mapbox")
       const json = await query;
       const data = json.routes[0];
+      this.car_route = data;
       const route = data.geometry.coordinates;
-      console.log("route", route)
+      console.log("route", route, data)
       const geojson = {
         type: 'Feature',
         properties: {},

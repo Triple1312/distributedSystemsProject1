@@ -10,7 +10,7 @@ import mapboxgl from 'mapbox-gl'
 export default {
   name: "Here",
   props: {
-    center: Object// center object { lat: 40.730610, lng: -73.935242 }
+    center: Object
   },
   data() {
     return {
@@ -27,29 +27,13 @@ export default {
       zoom: 9,
     }));
     this.map = this.$store.state.map;
-    await this.addMarkers();
+    // await this.addMarkers();
 
   },
   methods: {
     addMarker(pos) {
       const marker = new mapboxgl.Marker().setLngLat(pos).addTo(this.map);
     },
-    removeMarker(marker) {
-
-    },
-    // async addMarkers() {
-    //   let stations = this.$store.state.stations;
-    //   while(stations === []) {
-    //     setTimeout(()=> {stations = this.$store.state.stations}, 50);
-    //   }
-    //   var x = 0;
-    //   console.log("gonna add")
-    //   stations.map((el)=> {
-    //     this.addMarker([el.locationX, el.locationY])
-    //     console.log(x++)
-    //   })
-    //   console.log("added")
-    // }
   },
   computed: {
     getStations() {
