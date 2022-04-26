@@ -18,15 +18,19 @@
 <!--        <p>{{station}}</p>-->
 <!--      </div>-->
 
-      <div class="barButton" @click="drawRoute"/>
+      <div class="barButton" @click="drawRoute" style="border: black 2px solid; margin: 10px; width: 20%; height: 3%; background-color: transparent; text-align-all: center">
+        Submit
+      </div>
 
-      <div style="background-color: blue; height: 20px; width: 50px; position: relative" v-if="found">
+      <div style=" height: 20px; width: 50px; position: relative; margin: auto" v-if="found">
+        <hr/>
         <label>
           Train:
         </label>
         duration: {{this.train_route.duration/60}} mins
       </div>
-      <div style="background-color: blue; height: 20px; width: 50px; top: 500px; position: absolute;" v-if="found">
+      <div style=" height: 20px; width: 50px; top: 500px; margin: auto" v-if="found">
+        <hr/>
         <label>
           Car:
         </label>

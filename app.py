@@ -14,4 +14,4 @@ api.add_resource(Stations, "/stations", "/stations/<id>")
 api.add_resource(Direction, "/direction", "/direction/<name>", "/direction/<frm>/<to>")
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=5000)
+    app.run()

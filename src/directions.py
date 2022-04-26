@@ -28,6 +28,7 @@ class Direction(Resource):
               '{}?alternatives=false&geometries=geojson&overview=full&steps=false&access_token=pk' \
               '.eyJ1IjoicHBwYzEzMTIiLCJhIjoiY2wxNTk0dGR0MHl6NzNkczBxNzRxbTczNSJ9.qFzM1Q2oov0E6rFbDodAdQ'\
             .format(from_coords[0], from_coords[1], to_coords[0], to_coords[1])
+        print(url)
 
         r = requests.get(url)
         data = r.json()["routes"][0]
