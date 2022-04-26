@@ -24,7 +24,7 @@ export default {
   mounted(){
     axios({
       method: "get",
-      url: 'https://api.irail.be/stations?format=json&lang=en'
+      url: 'http://localhost:80/stations'
     })
     .then((response)=> {
       this.stations = response.data.station;

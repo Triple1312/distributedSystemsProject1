@@ -21,7 +21,7 @@ export default {
     console.log("app mount")
     axios({
       method: "get",
-      url: 'https://api.irail.be/stations?format=json&lang=en'
+      url: 'http://localhost:80/stations'
     })
     .then((response)=> {
       this.$store.commit('setStations', response.data.station);

@@ -67,10 +67,75 @@ export default {
       const to = document.getElementById('directrionBarInputTo').getAttribute('value');
       this.$store.commit('setPoints', from, to);
     },
-    drawRoute() {
+    drawRoutet() {
       this.getRoute_train();
       this.getRoute_car();
       this.found = true;
+    },
+    async drawRoute() {
+      let query = await axios({
+        method: "get",
+        url: `http://localhost:80/direction/${this.$store.state.points.from.station.name}/${this.$store.state.points.to.station.name}`
+      }).then((resp)=> {
+        return resp.data
+      })
+      let resp = await query;
+      this.drawRouteCar(resp.car);
+      this.drawRouteTrain(resp.train);
+      this.found = true;
+
+    },
+    drawRouteTrain(route) {
+      let map = this.$store.state.map;
+      this.train_route = route;
+      if (map.getSource('route_train')) {
+        map.getSource('route_train').setData(route.geojson);
+      }
+      else {
+        map.addLayer({
+          id: 'route_train',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: route.geojson,
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#0000ff',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
+    },
+    drawRouteCar(route){
+      let map = this.$store.state.map;
+      this.car_route = route;
+      if (map.getSource('route_car')) {
+        map.getSource('route_car').setData(route.geojson);
+      }
+      else {
+        map.addLayer({
+          id: 'route_car',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: route.geojson
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#000000',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
     },
     async getRoute_train(){
       let points = this.$store.state.points;

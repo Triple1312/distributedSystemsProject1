@@ -1,7 +1,5 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource
 import requests
-import time
 import src.store as store
 from .stations import getStations
 
@@ -48,13 +46,15 @@ class Direction(Resource):
             .format(frm, to)
         r = requests.get(url)
         data = r.json()
+        duration = 0
         route = [self.stationCoordsAsList(frm)]
         try :
+            duration = data["connection"][0]["duration"]
             vias = data["connection"][0]["vias"]["via"]
             for i in vias:
                 route.append([i["stationinfo"]["locationX"], i["stationinfo"]["locationY"]])
         except:
-            pass
+            duration = 0
         route.append(self.stationCoordsAsList(to))
         geojson = {
             "type": 'Feature',
@@ -64,7 +64,7 @@ class Direction(Resource):
                 'coordinates': route,
             }
         }
-        return {"duration": data["connection"][0]["duration"], "geojson": geojson}
+        return {"duration": duration, "geojson": geojson}
 
 
     def stationCoordsAsList(self, station):

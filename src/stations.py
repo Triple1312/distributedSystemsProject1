@@ -1,5 +1,4 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource
 import requests
 import src.store as store
 
@@ -16,8 +15,7 @@ class Stations(Resource):
     def getStation(self, id):
         getStations()
         for i in store.store["stations"]['station']:
-            print(i)
-            if i['id'] == id:
+            if i['name'] == id:
                 return i
         return {"error": "no such id corresponds to a station"}
 
