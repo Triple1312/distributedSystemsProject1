@@ -9,7 +9,6 @@ class Direction(Resource):
         return {"error": "you should add 2 stations to the end of this url"}
 
     def get(self, frm=None, to=None):
-        print("idk", frm, to)
         if to:
             return {
                 "train": self.getTrainDirections(frm, to),
